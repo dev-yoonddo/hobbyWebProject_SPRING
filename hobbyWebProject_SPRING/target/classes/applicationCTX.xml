@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="boardVO" class="com.project.vo.BoardVO"></bean>
+	<!-- 각 VO 클래스의 bean을 만든다. 
+	<bean id="userVO" class="com.project.vo.UserVO"></bean>
+	<bean id="cmtVO" class="com.project.vo.CommentVO"></bean>
+	<bean id="groupVO" class="com.project.vo.GroupVO"></bean>
+	-->
+	<!-- boardList 클래스의 bean을 만든다. 
+	<bean id="boardList" class="com.koreait.vo.BoardList"></bean>
+	-->
+	<bean id="board" class="com.project.service.BoardService"></bean>
+	<!-- Service 클래스의 bean을 만든다. 
+	<bean id="user" class="com.project.service.UserService"></bean>
+	<bean id="comment" class="com.project.service.CmtService"></bean>
+	<bean id="group" class="com.project.service.GrService"></bean>
+	<bean id="member" class="com.project.service.MbService"></bean>
+	<bean id="file" class="com.project.service.FileService"></bean>
+	-->
+	<!-- boardDAO 클래스의 bean을 만든다. -->
+	<bean id="boardDAO" class="com.project.dao.BoardDAO"></bean>
+
+</beans>
