@@ -1,7 +1,5 @@
 package com.project.dao;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,13 +42,21 @@ public class BoardDAO{
 	}
 	public BoardVO view(int boardID, Model model) {
 		String sql = "select * from board where boardID = ?";
-		BoardVO vo = template.queryForObject(sql, new BeanPropertyRowMapper(BoardVO.class), boardID);
+		BoardVO vo = (BoardVO)template.queryForObject(sql, new BeanPropertyRowMapper<BoardVO>(BoardVO.class), boardID);
 		System.out.println("보기: " + vo);
 		return vo;
 	}
-	public void write(BoardVO boardVO) {
-		sql.append("insert into board (boardID, boardTitle, userID, boardDate, boardContent, boardAvailable, boardCategory, viewCount, heartCount, filename, fileRealname, fileDownCount)"
-				+"values(64, 'ttttttt' , 'user', now(), '메롱', 1, 'SPORTS', 0, 0, null, null, 0)");
-		template.update(sql.toString());
+	public int max() {
+		String sql = "select coalesce(MAX(boardID), 0) + 1 from board";
+		return (int)template.queryForObject(sql.toString(), new BeanPropertyRowMapper(BoardVO.class));
+	}
+	public int writeAction(BoardVO vo) {
+		int boardID = max();
+		System.out.println("제일큰아이디+1" + boardID);
+		System.out.println("글쓰기 : " + vo);
+		String sql = "insert into board (boardID, boardTitle, userID, boardDate, boardContent, boardAvailable, boardCategory, viewCount, heartCount, filename, fileRealname, fileDownCount)"
+				+ "values (?, ?, ?, now(), ?, 1, ?, 0, 0, ?, ?, 0)";
+		template.update(sql.toString(), boardID, vo.getBoardTitle(), vo.getUserID(), vo.getBoardContent(), vo.getBoardCategory(), vo.getFilename(), vo.getFileRealname());
+		return boardID;
 	}
 }

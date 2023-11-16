@@ -7,19 +7,32 @@
   		<welcome-file>community.jsp</welcome-file>    
   	</welcome-file-list>
   	 -->
+  	<servlet>
+	    <servlet-name>dispatcher</servlet-name>
+	    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	    <!--서블릿 3.0 표준 파일 업로드 기능 사용 위한 설정-->
+	    <multipart-config>
+	        <!--파일 하나의 최대 바이트 수-->
+	        <max-file-size>5242880</max-file-size>
+	        <!--멀티파트 요청 전체의 최대 바이트 수-->
+	        <max-request-size>27262976</max-request-size>
+	        <!--전송된 파일의 크기가 이것보다 클 때, 메모리의 파일 내용을 임시 파일로 만듦-->
+	        <file-size-threshold>1048576</file-size-threshold>
+	    </multipart-config>
+	</servlet>
 	<!-- The definition of the Root Spring Container shared by all Servlets 
 		and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
 	</context-param>
-
-	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<!-- 
+	Creates the Spring Container shared by all Servlets and Filters
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
-
+	 -->
 	<!-- Processes application requests -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
@@ -67,4 +80,5 @@
 		<res-type>javax.sql.DataSource</res-type>
 		<res-auth>Container</res-auth>
 	</resource-ref>
+	
 </web-app>

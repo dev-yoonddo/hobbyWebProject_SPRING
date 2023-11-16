@@ -225,8 +225,8 @@ System.out.println(bdcategory);
 	</h3>
 	<br>
 	${category} 
-	<form method="post" action="writeAction" enctype="multipart/form-data">
-		<input type="hidden" name="userID" value="<%=userID%>">
+	<form method="post" action="write/action" enctype="multipart/form-data">
+		<input type="hidden" name="userID" value="user">
 		<div class="right-row">
 				<div class="category-sel" style="display: flex;">
 				<select name="boardCategory">

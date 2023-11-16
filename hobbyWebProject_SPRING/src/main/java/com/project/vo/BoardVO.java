@@ -20,20 +20,15 @@ public BoardVO() {
 	// TODO Auto-generated constructor stub
 }
 
-public BoardVO(int boardID, String boardTitle, String userID, String boardDate, String boardContent, int boardAvailable,
-		String boardCategory, int viewCount, int heartCount, String filename, String fileRealname, int fileDownCount) {
+public BoardVO(int boardID, String boardTitle, String userID, String boardContent,
+		String boardCategory, String filename, String fileRealname) {
 	this.boardID = boardID;
 	this.boardTitle = boardTitle;
 	this.userID = userID;
-	this.boardDate = boardDate;
 	this.boardContent = boardContent;
-	this.boardAvailable = boardAvailable;
 	this.boardCategory = boardCategory;
-	this.viewCount = viewCount;
-	this.heartCount = heartCount;
 	this.filename = filename;
 	this.fileRealname = fileRealname;
-	this.fileDownCount = fileDownCount;
 }
 
 public int getBoardID() {

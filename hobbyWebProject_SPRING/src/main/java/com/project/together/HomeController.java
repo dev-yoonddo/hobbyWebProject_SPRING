@@ -1,11 +1,13 @@
 package com.project.together;
 
 import org.slf4j.Logger;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.service.BoardService;
+import com.project.service.FileUploadService;
 import com.project.vo.BoardVO;
 
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -39,9 +42,7 @@ public class HomeController{
 //		servlet-context.xml 파일에서 생성된 JdbcTemplate 클래스의 bean을 넣어준다.
 		Constant.template = this.template;
 	}
-	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
-	BoardService service = ctx.getBean("board", BoardService.class);
-
+	
 	@RequestMapping("/")
 	public String home(Locale locale, Model model) {
 		System.out.println("컨트롤러의 home() 메소드");
@@ -55,6 +56,8 @@ public class HomeController{
 	@RequestMapping("/search")
 	public String search(HttpServletRequest request, Model model) {
 		System.out.println("컨트롤러의 search() 메소드");
+		AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+		BoardService service = ctx.getBean("board", BoardService.class);
 		List<BoardVO> bdlist = service.getBoardList(request, model);
 		String category = request.getParameter("category");
 		model.addAttribute("category", category);
@@ -63,14 +66,29 @@ public class HomeController{
 	}
 	@RequestMapping("/view")
 	public String view(@RequestParam("id") int boardID, Model model) {
+		AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+		BoardService service = ctx.getBean("board", BoardService.class);
 		BoardVO vo = service.view(boardID, model);
 		model.addAttribute("vo", vo);
 		return "view";
 	}
-
 	@RequestMapping("/write")
 	public String write(HttpServletRequest request, Model model) {
-		service.write(model);
-		return "redirect:community";
+		//service.write(request, model);
+		return "write";
+	}
+
+	@RequestMapping("/write/action")
+	public String writeAction(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+		BoardService service = ctx.getBean("board", BoardService.class);
+		FileUploadService upload = ctx.getBean("fileupload", FileUploadService.class);
+		BoardVO vo = upload.fileupload(request, response);
+		System.out.println(vo);
+		int boardID = service.writeAction(vo);
+//		model.addAttribute("boardID",boardID);
+		request.setAttribute("boardID", boardID);
+		System.out.println("글작성완료: " + boardID);
+		return "view?id=" + boardID;
 	}
 }
