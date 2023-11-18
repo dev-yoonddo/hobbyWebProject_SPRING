@@ -208,8 +208,8 @@ if(session.getAttribute("userID") != null){
 	userID = (String)session.getAttribute("userID");
 }
 //searchPage에서 글쓰기 버튼을 눌렀을 때 전달받는 카테고리 값 가져오기
-String bdcategory = request.getParameter("category");
-System.out.println(bdcategory);
+//String bdcategory = request.getParameter("category");
+//System.out.println(bdcategory);
 %>
 <!-- header start-->
 <header id="header">
@@ -224,12 +224,21 @@ System.out.println(bdcategory);
 	<%= userID %>님 안녕하세요
 	</h3>
 	<br>
-	${category} 
-	<form method="post" action="write/action" enctype="multipart/form-data">
+	<!-- ${category}  -->
+	<c:if test="${not empty vo}">
+		<c:set var="vo" value="${vo}"/>
+		${vo.userID}
+		${vo.boardTitle }
+		${vo.boardContent }
+	</c:if>
+	<!-- url에 카테고리값을 넘겨주기 위해 toLowerCase() 했던 값을 다시 toUpperCase() 해준다 -->
+	<c:set var="category" value="${category.toUpperCase()}"/>
+	
+	<form method="post" action="write" enctype="multipart/form-data">
 		<input type="hidden" name="userID" value="user">
 		<div class="right-row">
 				<div class="category-sel" style="display: flex;">
-				<select name="boardCategory">
+				<select name="boardCategory" >
 					<option value="0">CATEGORY</option>
 					<option value="SPORTS" >SPORTS</option>
 					<option value="LEISURE" >LEISURE</option>
@@ -246,10 +255,10 @@ System.out.println(bdcategory);
 					</thead>
 					<tbody>
 						<tr>
-							<td><textarea placeholder="제목을 입력하세요" name="boardTitle" maxlength="50"></textarea></td>
+							<td><textarea placeholder="제목을 입력하세요" name="boardTitle" maxlength="50">${vo.boardTitle}</textarea></td>
 						</tr>
 						<tr>
-							<td><textarea placeholder="내용을 입력하세요" name="boardContent" maxlength="2048" style="height: 350px; "></textarea></td>
+							<td><textarea placeholder="내용을 입력하세요" name="boardContent" maxlength="2048" style="height: 350px; ">${vo.boardContent}</textarea></td>
 						</tr>
 					</tbody>
 				</table>
@@ -273,7 +282,8 @@ System.out.println(bdcategory);
 
 <script>
 //글쓰기 버튼을 클릭했던 페이지의 카테고리가 글 작성시 선택되어있도록 한다.
-let bdcategory = '<%= bdcategory %>';
+var bdcategory = "${category}";
+	bdcategory = "${vo.boardCategory}";
 
 let selectBox = document.getElementsByName('boardCategory')[0];
 

@@ -13,9 +13,7 @@
 	<bean id="boardList" class="com.koreait.vo.BoardList"></bean>
 	-->
 	<bean id="board" class="com.project.service.BoardService">
-		<constructor-arg ref="fileupload"></constructor-arg>
 	</bean>
-	<bean id="fileupload" class="com.project.service.FileUploadService"></bean>
 	<!-- Service 클래스의 bean을 만든다. 
 	<bean id="user" class="com.project.service.UserService"></bean>
 	<bean id="comment" class="com.project.service.CmtService"></bean>

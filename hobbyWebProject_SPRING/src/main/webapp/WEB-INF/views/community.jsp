@@ -141,7 +141,7 @@ button {
 </header>
 <section>
 <div class="select-hobby">
-<form method="post" id ="searchField2" action="search">
+<form method="post" id ="searchField2" action="javascript:search()">
 	<div id="select-sec">
 		<div class="select">
 			<div class="text">
@@ -166,6 +166,7 @@ button {
 
 
 <script>
+function 
 //select box 클릭하면 접고 펼치기
 function onClickSelect(e) {
 	const isActive = e.currentTarget.className.indexOf("active") !== -1;

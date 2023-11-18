@@ -69,14 +69,14 @@ public class BoardService implements Service{
 //	}
 	
 @Override
-public List<BoardVO> getBoardList(HttpServletRequest request, Model model){
+public List<BoardVO> getBoardList(String category, Model model){
 //	Map<String, Object> map = model.asMap();
 //	HttpServletRequest request = (HttpServletRequest) map.get("request");
 	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
 	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
 //	BoardService bdlist = ctx.getBean("board", BoardService.class);
 //	bdlist.getBoardList(model);
-	return boardDAO.getBoardList(request, model);
+	return boardDAO.getBoardList(category, model);
 }
 @Override
 public BoardVO view(int boardID, Model model) {
@@ -85,14 +85,14 @@ public BoardVO view(int boardID, Model model) {
 	return (BoardVO)boardDAO.view(boardID, model);
 }
 @Override
-public int writeAction(BoardVO vo) {
+public int writeAction(BoardVO vo){
 	//BoardVO vo = ctx.getBean("boardVO", BoardVO.class);
 	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
 	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
-	System.out.println(vo.getUserID());
-	System.out.println(vo.getUserID());
-	System.out.println(vo.getUserID());
-	return boardDAO.writeAction(vo);
+	System.out.println("글쓰기 유저: " + vo.getUserID());
+	int result = boardDAO.writeAction(vo);
+	System.out.println("글쓰기 결과: " + result);
+	return result;
 }
 
 }

@@ -22,6 +22,7 @@ public class FileUploadService{
 	public BoardVO fileupload(HttpServletRequest request, HttpServletResponse response) {
 			int boardID = 0;
 			String userID = null;
+			String boardDate = null;
 			String boardCategory = null;
 			String boardTitle = null;
 			String boardContent = null;
@@ -82,8 +83,7 @@ public class FileUploadService{
 				}
 			}
 			// 데이터들을 vo객체에 저장한 뒤 리턴한다.
-			BoardVO vo = new BoardVO(boardID, userID, boardTitle, boardContent, boardCategory, filename, fileRealname);
-
+			BoardVO vo = new BoardVO(boardID, boardTitle, userID, boardDate, boardContent, boardCategory, filename, fileRealname);
 			return vo;
 
 		}

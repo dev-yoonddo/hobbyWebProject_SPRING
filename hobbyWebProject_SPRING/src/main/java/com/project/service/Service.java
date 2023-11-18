@@ -13,7 +13,7 @@ import com.project.vo.BoardVO;
 public interface Service {
 	//void execute(BoardVO boardVO);
 	//void execute(Model model);
-	List<BoardVO> getBoardList(HttpServletRequest request, Model model);
+	List<BoardVO> getBoardList(String category, Model model);
 	BoardVO view(int boardID, Model model);
-	int writeAction(BoardVO vo);
+	int writeAction(BoardVO vo) throws Exception;
 }

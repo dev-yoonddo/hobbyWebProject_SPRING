@@ -304,8 +304,8 @@ th span{
 			</div>
 		</c:if>
 		<button type="button" class="btn-blue" id="search" onclick="location.href='community'"><span>돌아가기</span></button>
+			<button type="button" class="btn-blue" id="write" onclick="location.href='${category.toLowerCase()}'"><span>글쓰기</span></button>
 		<c:if test="${not empty userID}">
-			<button type="button" class="btn-blue" id="write" onclick="location.href='write?category=${category}'"><span>글쓰기</span></button>
 		</c:if>
 	</div>
 </section>
@@ -321,7 +321,7 @@ th span{
 </footer>
 <script>
 function view(boardID){
-	location.href='/view?id='+ boardID;
+	location.href='view/'+ boardID;
 }
 </script>
 <script>

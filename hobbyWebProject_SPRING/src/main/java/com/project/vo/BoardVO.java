@@ -1,30 +1,29 @@
 package com.project.vo;
 
 public class BoardVO {
-private int boardID;
-private String boardTitle;
-private String userID;
-private String boardDate;
-private String boardContent;
-private int boardAvailable;
-private String boardCategory;
-private int viewCount;
-private int heartCount;
-private String filename;
-private String fileRealname;
-private int fileDownCount;
+	private int boardID;
+	private String boardTitle;
+	private String userID;
+	private String boardDate;
+	private String boardContent;
+	private int boardAvailable;
+	private String boardCategory;
+	private int viewCount;
+	private int heartCount;
+	private String filename;
+	private String fileRealname;
+	private int fileDownCount;
 
 
 public BoardVO() {
-	super();
-	// TODO Auto-generated constructor stub
 }
 
-public BoardVO(int boardID, String boardTitle, String userID, String boardContent,
+public BoardVO(int boardID, String boardTitle, String userID, String boardDate, String boardContent,
 		String boardCategory, String filename, String fileRealname) {
 	this.boardID = boardID;
 	this.boardTitle = boardTitle;
 	this.userID = userID;
+	this.boardDate = boardDate;
 	this.boardContent = boardContent;
 	this.boardCategory = boardCategory;
 	this.filename = filename;
