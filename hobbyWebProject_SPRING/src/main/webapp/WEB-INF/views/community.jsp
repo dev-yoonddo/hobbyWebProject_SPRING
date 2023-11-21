@@ -150,10 +150,10 @@ button {
 				<span><i class="fa-solid fa-chevron-down"></i></span>
 			</div>
 		<ul class="option-list">
-			<li class="option"><input type="hidden" name="category" id="SPORTS" value="SPORTS"><span>SPORTS</span></li>
-			<li class="option"><input type="hidden" name="category" id="LEISURE" value="LEISURE"><span>LEISURE</span></li>
-			<li class="option"><input type="hidden" name="category" id="MUSIC" value="MUSIC"><span>MUSIC</span></li>
-			<li class="option"><input type="hidden" name="category" id="OTHER" value="OTHER"><span>OTHER</span></li>
+			<li class="option"><input type="hidden" name="category" id="SPORTS" value="sports"><span>SPORTS</span></li>
+			<li class="option"><input type="hidden" name="category" id="LEISURE" value="leisure"><span>LEISURE</span></li>
+			<li class="option"><input type="hidden" name="category" id="MUSIC" value="music"><span>MUSIC</span></li>
+			<li class="option"><input type="hidden" name="category" id="OTHER" value="other"><span>OTHER</span></li>
 		</ul>
 		</div>
 		<div id="submit-btn">
@@ -163,10 +163,15 @@ button {
 </form>
 </div>
 </section>
-
-
 <script>
-function 
+var selectedCat = null;
+function search(){
+	if(selectedCat == null){
+		alert("카테고리를 선택해주세요");
+		return;
+	}
+	location.href='/search/'+selectedCat;
+}
 //select box 클릭하면 접고 펼치기
 function onClickSelect(e) {
 	const isActive = e.currentTarget.className.indexOf("active") !== -1;
@@ -180,8 +185,10 @@ document.querySelector("#select-sec .select").addEventListener("click", onClickS
 
 //클릭한 값을 박스안에 넣기
 function onClickOption(e) {
-	const selectedValue = e.currentTarget.innerHTML;
+	var selectedValue = e.currentTarget.innerHTML;
 	document.querySelector("#select-sec .text").innerHTML = selectedValue;
+	selectedCat = $('input[name=category]').val(); //선택된 카테고리 저장하기
+	console.log(selectedCat);
 }
 
 var optionList = document.querySelectorAll("#select-sec .option");

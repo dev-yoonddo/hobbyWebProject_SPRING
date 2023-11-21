@@ -219,7 +219,7 @@ if(session.getAttribute("userID")!=null){
 	님 안녕하세요
 	</h3>
 	<br>
-	<form method="post" action="updateAction" enctype="multipart/form-data">
+	<form method="post" action="/update" enctype="multipart/form-data">
 		<div class="right-row">
 			<input type="hidden" name="boardID" value="${vo.boardID}"/>
 			<input type="hidden" name="userID" value="<%=userID%>">

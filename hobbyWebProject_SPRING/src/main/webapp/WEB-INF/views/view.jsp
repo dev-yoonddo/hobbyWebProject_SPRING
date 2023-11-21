@@ -358,11 +358,12 @@ table caption{
 
 <!-- section -->
 <section>
-<c:set var="userID" value="<%=userID %>"/>
+<c:set var="userID" value="<%=userID%>"/>
 	<div class="board-container" id="container">
 		<div class="inquiry">
 			<div class="row"><br>
-				<c:set var="vo" value="${vo}"/>		
+				<c:set var="vo" value="${vo}"/>
+				<c:set var="category" value="${(vo.boardCategory).toLowerCase()}"/>
 				<c:set var="date" value="${fn:substring(vo.boardDate,0,16)}"/>
 			
 				<!-- 공지사항은 카테고리가 아닌 제목을 출력한다. -->
@@ -411,7 +412,7 @@ table caption{
 							<c:if test="${not empty vo.filename and vo.filename.endsWith('.jpg') or vo.filename.endsWith('.JPG') or vo.filename.endsWith('.png') or vo.filename.endsWith('.PNG')}">
 								<td class="view-file" id="view-file-1" width="35%">
 									<button id="close-file" onclick="closeFile()">X</button>
-									<img src="./upload/${vo.fileRealname}" width="300px">
+									<img src="/resources/upload/${vo.fileRealname}" width="300px">
 								</td>
 							</c:if>
 						</tr>
@@ -429,7 +430,7 @@ table caption{
 							<c:if test="${not empty vo.filename and vo.filename.endsWith('.jpg') or vo.filename.endsWith('.JPG') or vo.filename.endsWith('.png') or vo.filename.endsWith('.PNG')}">
 								<td class="view-file" id="view-file-1" width="35%">
 									<button id="close-file" onclick="closeFile()">X</button>
-									<img src="./upload/${vo.fileRealname}" width="300px"/>
+									<img src="/resources/upload/${vo.fileRealname}" width="300px"/>
 								</td>
 							</c:if>
 						</tr>
@@ -439,7 +440,7 @@ table caption{
 				<c:if test="${not empty vo.filename and vo.filename.endsWith('.jpg') or vo.filename.endsWith('.JPG') or vo.filename.endsWith('.png') or vo.filename.endsWith('.PNG')}">
 					<tr class="tr" id="view-file-2" height="200px">
 						<td width="300px">
-							<img src="./upload/${vo.fileRealname}" />
+							<img src="/resources/upload/${vo.fileRealname}" />
 						</td>
 						<td width="50px;">
 							<button id="close-file" onclick="closeFile()">X</button>
@@ -455,12 +456,12 @@ table caption{
 					<c:choose>
 						<c:when test="${not empty vo.filename}">
 							<!-- form태그로 전송하는 방법 -->
-							<form id="download_form" action="<%=request.getContextPath()%>/downloadAction" method="get">
+							<form id="download_form" action="<%=request.getContextPath()%>/download" method="get">
 							<!-- 텍스트 클릭시 다운로드를 하기 위해 onclick으로 javascript를 이용해 submit기능을 대신한다. -->
 								<div class="files" id="file_form" onclick="submit()" style="width: 300px; cursor: pointer;"> 
 									<div id="filename">${vo.filename}</div>(다운로드 ${vo.fileDownCount}회)
 									<input hidden="hidden" name="file" value="${vo.fileRealname}">
-									<input hidden="hidden" name="boardID" value="${boardID}">
+									<input hidden="hidden" name="boardID" value="${vo.boardID}">
 								</div>
 							</form>
 						</c:when>
@@ -476,14 +477,14 @@ table caption{
 						<button type="button" id="list" class="btn-blue" onclick="location.href='community'"><span>목록</span></button>					
 					</c:when>
 					<c:otherwise>
-						<button type="button" id="list" class="btn-blue" onclick="location.href= 'searchPage?category=${vo.boardCategory}'"><span>목록</span></button>
+						<button type="button" id="list" class="btn-blue" onclick="location.href='/search/${category}'"><span>목록</span></button>
 					</c:otherwise>
 				</c:choose>
 				<c:if test="${not empty userID}">
 					<button type="button" class="btn-blue" id="cmt-write-btn" onclick="cmtAction()"><span>댓글쓰기</span></button>
 					<c:if test="${vo.userID == userID}">
-						<button type="button" class="btn-blue" id="update" onclick="location.href='update?boardID=${vo.boardID}'"><span>수정</span></button>
-						<button type="button" class="btn-blue" id="btn-del" onclick="if(confirm('정말로 삭제하시겠습니까?')){location.href='deleteAction?boardID=${vo.boardID}&category=${vo.boardCategory}'}"><span>삭제</span></button>
+						<button type="button" class="btn-blue" id="update" onclick="location.href='/update/${vo.boardID}'"><span>수정</span></button>
+						<button type="button" class="btn-blue" id="btn-del" onclick="if(confirm('정말로 삭제하시겠습니까?')){location.href='/delete/${category}/${vo.boardID}'}"><span>삭제</span></button>
 					</c:if>
 					<c:if test="${vo.userID == 'manager'}">
 						<button type="button" class="btn-blue" id="btn-del" onclick="if(confirm('정말로 삭제하시겠습니까?')){location.href='deleteAction?boardID=${vo.boardID}&category=${vo.boardCategory}'}"><span>삭제</span></button>
@@ -513,27 +514,28 @@ table caption{
 				<div class="row" style="width: 600px; height: auto;">
 				<c:if test="${not empty cmtlist}">
 					<c:forEach var="cmt" items="${cmtlist}">
-					<c:set var="cmtDate" value="${fn:substring(cmt.cmtDate,0,16)}"/>
-					
-					    <div class="cmt-list" style="width: 600px; height: 110px;">
-					    <div style="display: flex;">
-					    	<div class="cmt-icon" style="justify-content: center; padding: 10px;">
-			               		<i style="font-size: 30pt;"class="fa-regular fa-face-smile"></i>
-			               	</div>
-		               		<table class="cmt-table" style="width: 600px;">
-		               		<tr style="height: 30px; table-layout:fixed; ">
-		               			<td align="left" style="width:30%;">${cmt.userID}</td>
-		               			<td align="right" style="width:70%;">${cmtDate }</td>
-		               		</tr>
-		               		<tr style="height: auto; font-weight: 550;">
-		               			<td colspan="2">${cmt.cmtContent}</td>
-		               		</tr>		               		
-				           	</table>
-					    </div>
-					    <c:if test="${not empty userID and userID == cmt.userID or userID == 'manager'}">
-					         <button type="button" class="btn-blue" id="cmt-btn" onclick="deleteCmt(${cmt.cmtID})"><span>삭제</span></button>
-					    </c:if>
-						</div>
+					<!-- cmtAvailable = 1인 값만 출력 -->
+						<c:set var="cmtDate" value="${fn:substring(cmt.cmtDate,0,16)}"/>
+						
+						    <div class="cmt-list" style="width: 600px; height: 110px;">
+						    <div style="display: flex;">
+						    	<div class="cmt-icon" style="justify-content: center; padding: 10px;">
+				               		<i style="font-size: 30pt;"class="fa-regular fa-face-smile"></i>
+				               	</div>
+			               		<table class="cmt-table" style="width: 600px;">
+			               		<tr style="height: 30px; table-layout:fixed; ">
+			               			<td align="left" style="width:30%;">${cmt.userID}</td>
+			               			<td align="right" style="width:70%;">${cmtDate }</td>
+			               		</tr>
+			               		<tr style="height: auto; font-weight: 550;">
+			               			<td colspan="2">${cmt.cmtContent}</td>
+			               		</tr>		               		
+					           	</table>
+						    </div>
+						    <c:if test="${not empty userID and userID == cmt.userID or userID == 'manager'}">
+						         <button type="button" class="btn-blue" id="cmt-btn" onclick="deleteCmt(${cmt.cmtID})"><span>삭제</span></button>
+						    </c:if>
+							</div>
 					</c:forEach>
 					</c:if>
 					<c:if test="${empty cmtlist }">
@@ -574,7 +576,7 @@ function registCmt(content){
 	$.ajax({
 	    type: 'POST',
 	    //url: 'https://toogether.me/spotRegistAction',
-	    url: 'cmt',
+	    url: '/cmt',
 	    data: data,
 	    success: function (response) {
 	    	if (response === 'success') {
@@ -602,7 +604,7 @@ function deleteCmt(cmtID){
 		$.ajax({
 		    type: 'POST',
 		    //url: 'https://toogether.me/spotRegistAction',
-		    url: 'cmt/delete',
+		    url: '/cmt/delete',
 		    data: data,
 		    success: function (response) {
 		    	if (response === 'success') {
@@ -633,7 +635,7 @@ function heartAction(value){
 	    };
 	    $.ajax({
 	        type: 'POST',
-	        url: 'view/heart',
+	        url: '/heart',
 	        data: data,
 	        success: function (response) {
 		    	if (response === 'success') {

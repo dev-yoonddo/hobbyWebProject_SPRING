@@ -57,7 +57,7 @@ public class FileUploadService{
 							filename = item.getName();
 							if (filename != null && !filename.isEmpty()) {
 								// git repository와 연결하면 경로가 바뀐다.
-								String dir = "C:/Users/admin/git/mvc_hobbyWebProject/mvc_hobbyWebProject/WebContent/upload/";
+								String dir = "C:/Users/admin/git/hobbyWebProject_SPRING/hobbyWebProject_SPRING/src/main/webapp/resources/upload/";
 								File fileupload = new File(dir);
 								if (!fileupload.exists()) {
 									fileupload.mkdirs();

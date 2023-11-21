@@ -246,7 +246,7 @@ th span{
 	<c:set var="userID" value="<%=userID %>"/>
 	<div class="board-container">
 		<div id="search-title">
-			<h2>${category}</h2><h4>함께 할 사람들과 이야기 나눠보세요</h4>
+			<h2>${category.toUpperCase()}</h2><h4>함께 할 사람들과 이야기 나눠보세요</h4>
 		</div><br>
 		
 		<!-- 게시글 리스트 -->
@@ -303,8 +303,8 @@ th span{
 				</div>
 			</div>
 		</c:if>
-		<button type="button" class="btn-blue" id="search" onclick="location.href='community'"><span>돌아가기</span></button>
-			<button type="button" class="btn-blue" id="write" onclick="location.href='${category.toLowerCase()}'"><span>글쓰기</span></button>
+		<button type="button" class="btn-blue" id="search" onclick="location.href='/community'"><span>돌아가기</span></button>
+			<button type="button" class="btn-blue" id="write" onclick="location.href='/write'"><span>글쓰기</span></button>
 		<c:if test="${not empty userID}">
 		</c:if>
 	</div>
@@ -321,7 +321,7 @@ th span{
 </footer>
 <script>
 function view(boardID){
-	location.href='view/'+ boardID;
+	location.href='/view/'+ boardID;
 }
 </script>
 <script>

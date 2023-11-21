@@ -13,10 +13,11 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.ui.Model;
 
 import com.project.dao.BoardDAO;
+import com.project.dao.HeartDAO;
 import com.project.vo.*;
 
 public class BoardService implements Service{
-	
+
 //	@Override
 //	public void execute(BoardVO boardVO) {
 //		System.out.println("InsertService의 execute() 메소드 - VO 사용");
@@ -79,11 +80,12 @@ public List<BoardVO> getBoardList(String category, Model model){
 	return boardDAO.getBoardList(category, model);
 }
 @Override
-public BoardVO view(int boardID, Model model) {
+public BoardVO getBoardVO(int boardID, Model model) {
 	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
 	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
-	return (BoardVO)boardDAO.view(boardID, model);
+	return boardDAO.getBoardVO(boardID, model);
 }
+
 @Override
 public int writeAction(BoardVO vo){
 	//BoardVO vo = ctx.getBean("boardVO", BoardVO.class);
@@ -92,6 +94,57 @@ public int writeAction(BoardVO vo){
 	System.out.println("글쓰기 유저: " + vo.getUserID());
 	int result = boardDAO.writeAction(vo);
 	System.out.println("글쓰기 결과: " + result);
+	return result;
+}
+@Override
+public int updateAction(BoardVO vo) {
+	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
+	int result = boardDAO.updateAction(vo);
+	return result;
+}
+@Override
+public String getFilename(int boardID) {
+	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
+	String result = boardDAO.getFilename(boardID);
+	return result;
+}
+@Override
+public int viewCount(int boardID) {
+	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
+	return boardDAO.downCount(boardID);
+}
+@Override
+public int downCount(int boardID) {
+	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
+	int result = boardDAO.viewCount(boardID);
+	return result;
+}
+@Override
+public int heartCount(HttpServletRequest request, HttpServletResponse response) {
+	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
+	int boardID = Integer.parseInt(request.getParameter("boardID"));
+	int result = boardDAO.heartCount(boardID);
+	return result;
+}
+@Override
+public int heartMinus(HttpServletRequest request, HttpServletResponse response) {
+	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
+	int boardID = Integer.parseInt(request.getParameter("boardID"));
+	int result = boardDAO.heartMinus(boardID);
+	return result;
+}
+@Override
+public int deleteAction(int boardID) {
+	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
+	int result = boardDAO.deleteAction(boardID);
+	System.out.println("게시글삭제: " + result);
 	return result;
 }
 

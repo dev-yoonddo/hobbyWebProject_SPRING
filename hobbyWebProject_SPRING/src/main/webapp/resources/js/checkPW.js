@@ -103,6 +103,7 @@ function userDataCheck(obj) {
 		return false;
 	}
 	//password check
+	
 	// alert('passwordCheck()');
 	if (obj.userPassword.value != obj.userPassword1.value) {
 		alert("비밀번호가 일치하지 않습니다");
@@ -147,9 +148,18 @@ function userDataCheck(obj) {
 		obj.userPassword.focus();
 		return false;
 	}
-	
+	//기존 패스워드와 같은지 확인
+	var pw = obj.password.value;
+	if(pw === obj.userPassword.value){
+		alert('이미 사용중인 패스워드입니다.');
+		obj.userPassword.value = '';
+		obj.userPassword1.value = '';
+		obj.userPassword.focus();
+		return false;
+	}
 	//모든 검사에서 통과되면 userID의 속성이 disabled == true로 되어있던걸 false로 변경하고 true를 반환한다.
 	id.disabled = false;
+	//true로 변경하지 않으면 submit 할 때 값이 넘어가지 않는다.
 	return true;
 
 }
@@ -188,7 +198,7 @@ function checkID(id){
         $.ajax({
             type: 'GET',
             //url: 'https://toogether.me/spotRegistAction',
-            url: 'checkID',
+            url: '/join/checkID',
             data: data,
             async:false,
             success: function (response) {

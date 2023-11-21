@@ -1,5 +1,6 @@
 package com.project.service;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,6 +15,14 @@ public interface Service {
 	//void execute(BoardVO boardVO);
 	//void execute(Model model);
 	List<BoardVO> getBoardList(String category, Model model);
-	BoardVO view(int boardID, Model model);
+	BoardVO getBoardVO(int boardID, Model model);
 	int writeAction(BoardVO vo) throws Exception;
+	int updateAction(BoardVO vo);
+//	int fileDownload(HttpServletRequest request, HttpServletResponse response);
+	String getFilename(int boardID);
+	int viewCount(int boardID);
+	int downCount(int boardID);
+	int deleteAction(int boardID);
+	int heartCount(HttpServletRequest request, HttpServletResponse response);
+	int heartMinus(HttpServletRequest request, HttpServletResponse response);
 }

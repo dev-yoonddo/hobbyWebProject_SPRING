@@ -233,7 +233,6 @@ if(session.getAttribute("userID") != null){
 	</c:if>
 	<!-- url에 카테고리값을 넘겨주기 위해 toLowerCase() 했던 값을 다시 toUpperCase() 해준다 -->
 	<c:set var="category" value="${category.toUpperCase()}"/>
-	
 	<form method="post" action="write" enctype="multipart/form-data">
 		<input type="hidden" name="userID" value="user">
 		<div class="right-row">
@@ -283,8 +282,16 @@ if(session.getAttribute("userID") != null){
 <script>
 //글쓰기 버튼을 클릭했던 페이지의 카테고리가 글 작성시 선택되어있도록 한다.
 var bdcategory = "${category}";
-	bdcategory = "${vo.boardCategory}";
-
+bdcategory = "${vo.boardCategory}";
+function write(){
+	var selected = $('select[name="boardCategory"]>option:checked').val();
+	console.log(selected);
+	if(selected === "0"){
+		alert('카테고리를 선택하세요');
+		return;
+	}
+	location.href='/write';
+}
 let selectBox = document.getElementsByName('boardCategory')[0];
 
 for (let i = 0; i < selectBox.options.length; i++) {

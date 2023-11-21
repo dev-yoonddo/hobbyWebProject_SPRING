@@ -42,12 +42,12 @@
 				<%
 					if (userID == null) {
 				%>
-				<li><a href="login">LOGIN</a></li>
-				<li><a href="join">JOIN</a></li>
+				<li><a href="/login">LOGIN</a></li>
+				<li><a href="/join">JOIN</a></li>
 				<%
 					} else {
 				%>
-				<li><a href="userUpdate"><i class="fa-solid fa-gear"
+				<li><a href="/user"><i class="fa-solid fa-gear"
 						id="updateicon"></i></a></li>
 				<li><a href="logout">LOGOUT</a></li>
 				<%
