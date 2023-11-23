@@ -21,7 +21,7 @@
 					<a href="mainPage" id="mainlogo">TOGETHER</a>
 				</div>
 				<ul class="navbar_menu" style="float: left;">
-					<li><a href="community" class="menu">COMMUNITY</a></li>
+					<li><a href="/community" class="menu">COMMUNITY</a></li>
 					<%
 						if (userID == null) {
 					%>
