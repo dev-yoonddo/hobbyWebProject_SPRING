@@ -51,9 +51,7 @@ public class HomeController{
 
 	@Autowired		// @Autowired 어노테이션을 붙여준 메소드는 프로젝트가 시작될 때 자동으로 실행된다.
 	public void setTemplate(JdbcTemplate template) {
-		this.template = template;
-		System.out.println("꺄오~~~~~~~~~~~~~~~");
-		
+		this.template = template;		
 //		여기까지 정상적으로 실행되면 컨트롤러에서 JdbcTemplate을 사용할 수 있다.
 //		데이터베이스 연결은 주로 DAO 클래스에서 사용하므로 컨트롤러 이외의 클래스에서 JdbcTemplate을 사용할
 //		수 있게 하기 위해서 적당한 이름의 패키지에 적당한 이름으로 클래스를 만들고 선언한 정적 변수에
@@ -312,7 +310,7 @@ public class HomeController{
 			session.invalidate();
 			return "redirect:/community";
 		}else {
-			return "";
+			return "userUpdate";
 		}
 	}
 }	

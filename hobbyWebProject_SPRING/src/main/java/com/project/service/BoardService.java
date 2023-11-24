@@ -114,13 +114,13 @@ public String getFilename(int boardID) {
 public int viewCount(int boardID) {
 	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
 	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
-	return boardDAO.downCount(boardID);
+	return boardDAO.viewCount(boardID);
 }
 @Override
 public int downCount(int boardID) {
 	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
 	BoardDAO boardDAO = ctx.getBean("boardDAO", BoardDAO.class);
-	int result = boardDAO.viewCount(boardID);
+	int result = boardDAO.downCount(boardID);
 	return result;
 }
 @Override

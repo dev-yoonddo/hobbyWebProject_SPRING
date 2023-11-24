@@ -53,7 +53,6 @@ public class FileDownService{
 		// 위 두 줄의 코드만 사용해서 해당하는 운영체제의 경로를 받아와도 되지만 위 코드는 프로젝트 내부의 fileupload경로를 불러오는데
 		// 프로젝트 업데이트시 파일이 삭제되기 때문에 외부에 파일을 만들어 경로를 따로 지정해준다.
 		// 사진 다운로드가 가능하도록 하기 위해 각 경로가 존재하는지 확인하고 해당하는 경로로 객체를 생성한다.
-
 		String filePath = "C:/Users/admin/git/hobbyWebProject_SPRING/hobbyWebProject_SPRING/src/main/webapp/resources/upload/"+fileRealName;
 		// String awsPath = "/home/tomcat/apache-tomcat-8.5.88/webapps/fileupload/" +
 		// filename;
