@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class CalculatorTest {
+	public static void main(String[] args) {
+	}
 	private Connection conn;
 	public CalculatorTest(){
 		try {
