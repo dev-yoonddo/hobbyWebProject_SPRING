@@ -11,10 +11,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.service.BoardService;
 import com.project.service.CmtService;
-import com.project.service.FileDownService;
-import com.project.service.FileUploadService;
+import com.project.service.FileService;
 import com.project.service.HeartService;
+import com.project.service.Service;
 import com.project.service.UserService;
+import com.project.service.Impl.BoardServiceImpl;
+import com.project.service.Impl.CmtServiceImpl;
+import com.project.service.Impl.FileDownService;
+import com.project.service.Impl.FileServiceImpl;
+import com.project.service.Impl.FileUploadService;
+import com.project.service.Impl.HeartServiceImpl;
+import com.project.service.Impl.UserServiceImpl;
 import com.project.vo.BoardVO;
 import com.project.vo.CommentVO;
 import com.project.vo.HeartVO;
@@ -27,6 +34,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -42,21 +50,34 @@ import org.springframework.stereotype.Controller;
 public class HomeController{
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	private JdbcTemplate template;
-	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
-	UserService urservice = ctx.getBean("user", UserService.class);
-	BoardService service = ctx.getBean("board", BoardService.class);
-	HeartService htservice = ctx.getBean("heart", HeartService.class);
-	CmtService cmtservice = ctx.getBean("cmt", CmtService.class);
-	FileDownService download = ctx.getBean("file", FileDownService.class);
+	private UserService urservice;
+	private BoardService bdservice;
+	private CmtService cmtservice;
+	private HeartService htservice;
+	private FileService fileservice;
+	
+//	AbstractApplicationContext ctx = new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+//	BoardServiceImpl service = ctx.getBean("boardImpl", BoardServiceImpl.class);
+//	UserServiceImpl urservice = ctx.getBean("userImpl", UserServiceImpl.class);
+//	HeartServiceImpl htservice = ctx.getBean("heartImpl", HeartServiceImpl.class);
+//	CmtServiceImpl cmtservice = ctx.getBean("cmtImpl", CmtServiceImpl.class);
+//	FileServiceImpl fileservice = ctx.getBean("fileImpl", FileServiceImpl.class);
 
 	@Autowired		// @Autowired 어노테이션을 붙여준 메소드는 프로젝트가 시작될 때 자동으로 실행된다.
 	public void setTemplate(JdbcTemplate template) {
-		this.template = template;		
+		this.template = template;
+//		@Autowired로 servlet-context.xml에 등록된 bean에 setter메서드를 통한 의존관계를 주입한다.
 //		여기까지 정상적으로 실행되면 컨트롤러에서 JdbcTemplate을 사용할 수 있다.
+
 //		데이터베이스 연결은 주로 DAO 클래스에서 사용하므로 컨트롤러 이외의 클래스에서 JdbcTemplate을 사용할
-//		수 있게 하기 위해서 적당한 이름의 패키지에 적당한 이름으로 클래스를 만들고 선언한 정적 변수에
+//		수 있게 하기 위해서 Constant 클래스를 만들고 선언한 정적 변수에 아래 코드와 같이
 //		servlet-context.xml 파일에서 생성된 JdbcTemplate 클래스의 bean을 넣어준다.
 		Constant.template = this.template;
+	}
+	@Autowired
+	public void setUrservice(UserService urservice) {
+		this.urservice = urservice;
+		Service.urservice = this.urservice;
 	}
 	
 	@RequestMapping("/")
@@ -72,7 +93,7 @@ public class HomeController{
 	@RequestMapping("/search/{category}")
 	public String search(@PathVariable("category") String category, Model model) {
 		System.out.println("컨트롤러의 search() 메소드");
-		List<BoardVO> bdlist = service.getBoardList(category, model);
+		List<BoardVO> bdlist = bdservice.getBoardList(category, model);
 //		String category = request.getParameter("category");
 		model.addAttribute("category", category);
 		model.addAttribute("bdlist", bdlist);
@@ -80,8 +101,8 @@ public class HomeController{
 	}
 	@RequestMapping("/view/{id}")
 	public String view(@PathVariable("id") int boardID, Model model) {
-		service.viewCount(boardID);
-		BoardVO vo = service.getBoardVO(boardID, model);
+		bdservice.viewCount(boardID);
+		BoardVO vo = bdservice.getBoardVO(boardID, model);
 		HeartVO htvo = new HeartVO(boardID, "user");
 		List<CommentVO> cmtlist = cmtservice.getCmtList(boardID, model);
 		int exist = htservice.checkHeart(htvo);
@@ -107,12 +128,12 @@ public class HomeController{
 	}
 
 	@RequestMapping(value="/write", method=RequestMethod.POST)
-	public String writeAction(HttpServletRequest request, HttpServletResponse response, Model model){
+	public String writeAction(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
 		FileUploadService upload = new FileUploadService();
 		//multipart form으로 전송된 데이터를 fileupload 클래스로 넘겨 첨부파일이 존재하면 저장하고 vo객체를 가져온다.
 		BoardVO vo = upload.fileupload(request, response);
 		//BoardService 클래스의 writeAction메서드를 실행하고 결과값을 가져온다.
-		int result = service.writeAction(vo);
+		int result = bdservice.writeAction(vo);
 //		result = 0이면 빈 값이 존재하거나 데이터베이스 저장 실패를 의미한다.
 		if(result == 0) {
 //			request.setAttribute("vo", vo);
@@ -130,7 +151,7 @@ public class HomeController{
 	@RequestMapping("/update/{boardID}")
 	public String update(@PathVariable("boardID") int boardID, Model model) {
 		System.out.println("Controlller 의 update()");
-		BoardVO vo = service.getBoardVO(boardID,model);
+		BoardVO vo = bdservice.getBoardVO(boardID,model);
 		model.addAttribute("vo", vo);
 		return "update";
 	}
@@ -139,7 +160,7 @@ public class HomeController{
 		System.out.println("Controlller 의 updateAction()");
 		FileUploadService upload = new FileUploadService();
 		BoardVO vo = upload.fileupload(request, response);
-		int result = service.updateAction(vo);
+		int result = bdservice.updateAction(vo);
 //		result = 0이면 빈 값이 존재하거나 데이터베이스 저장 실패를 의미한다.
 		if(result == 0) {
 			model.addAttribute("vo", vo);
@@ -153,11 +174,11 @@ public class HomeController{
 	@RequestMapping("/download")
 	public void downloadAction(HttpServletRequest request, HttpServletResponse response) {
 		int boardID = Integer.parseInt(request.getParameter("boardID"));
-		int result = download.fileDownload(request, response);
+		int result = fileservice.fileDownload(request, response);
 		if(result == 0) {
 			System.out.println("다운로드실패");
 		}else {
-			int count = service.downCount(boardID);
+			int count = bdservice.downCount(boardID);
 			if(count == 1) {
 			System.out.println("다운로드성공");
 			}
@@ -168,7 +189,7 @@ public class HomeController{
 	public String deleteAction(@PathVariable("category")String category, @PathVariable("id") int boardID, Model model) {
 		int result = cmtservice.cmtAllDeleteAction(boardID);
 		if(result > 0) {
-			int bdDel = service.deleteAction(boardID);
+			int bdDel = bdservice.deleteAction(boardID);
 			if(bdDel > 0) {
 				System.out.println("게시글 삭제 성공");
 				result++;				
@@ -190,12 +211,12 @@ public class HomeController{
 		if(value.equals("none")) { //하트를 클릭했을때 넘어온 value값이 none이면 heartAction, exist이면 heartDelete 메서드 실행
 			result = htservice.heartAction(request, response);
 			if(result == 1){
-				result += service.heartCount(request, response); //데이터가 정상적으로 들어가면 board테이블의 heartCount 수 증가
+				result += bdservice.heartCount(request, response); //데이터가 정상적으로 들어가면 board테이블의 heartCount 수 증가
 			}
 		}else{
 			result = htservice.heartDelete(request, response);
 			if(result == 1){
-				result += service.heartMinus(request, response); //데이터가 정상적으로 들어가면 board테이블의 heartCount 수 감소
+				result += bdservice.heartMinus(request, response); //데이터가 정상적으로 들어가면 board테이블의 heartCount 수 감소
 			}
 		}
 		if(result == 2) { //두 가지의 메서드가 모두 정상적으로 실행되면 success 넘겨주기
@@ -232,15 +253,19 @@ public class HomeController{
 	@RequestMapping("/join")
 	public String join(HttpServletRequest request, HttpServletResponse response) {
 		List<String> emailList = urservice.getEmailList();
+		System.out.println("이메일 리스트: "+emailList);
 		request.setAttribute("emailList", emailList);
 		return "/join";
 	}
 	//아이디 중복체크
 	@RequestMapping("/join/checkID")
-	public void joinCheckID(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void joinCheckID(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		PrintWriter script = response.getWriter();
-		int exist = urservice.joinCheckID(request, response);
-		if(exist == 1) {
+		String userID = request.getParameter("userID");
+		int result = urservice.joinCheckID(userID);
+//		System.out.println("입력 받은 아이디: " +userID);
+//		System.out.println("아이디 중복 결과: " +result);
+		if(result > 0) {
 			script.print("fail");
 		}else {
 			script.print("success");
@@ -248,7 +273,7 @@ public class HomeController{
 	}
 	//회원가입실행
 	@RequestMapping("/join/action")
-	public String joinAction(HttpServletRequest request, HttpServletResponse response) {
+	public String joinAction(HttpServletRequest request, HttpServletResponse response){
 		int result = urservice.joinAction(request, response);
 		if(result == 1) {
 			return "/join";

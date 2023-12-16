@@ -9,26 +9,31 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import com.project.together.Constant;
 import com.project.vo.BoardVO;
 import com.project.vo.HeartVO;
 import com.project.vo.UserVO;
 
+@Repository
 public class UserDAO {
 	private JdbcTemplate template;
-//	private RowMapper<BoardVO> boardMapper = BeanPropertyRowMapper.newInstance(BoardVO.class);
-	private static final Logger logger = LoggerFactory.getLogger(BoardDAO.class);
+	private RowMapper<UserVO> userMapper = BeanPropertyRowMapper.newInstance(UserVO.class);
+	private RowMapper<String> stringMapper = BeanPropertyRowMapper.newInstance(String.class);
+	
+	//다른 클래스에서 UserDAO클래스의 메서드를 사용하려고 할 때 private으로 선언한 JdbcTemplate에 접근할 수 없기 때문에
+	//생성자를 작성해준다.
 	public UserDAO() {
 		this.template = Constant.template;
 	}
 	
 	//이메일 리스트를 넘겨 사용자가 입력한 이메일이 이미 존재하는지 확인
 	public List<String> getEmailList(){
+		String sql = "select userEmail from user where userEmail is not null";
 		try {
-			String sql = "select not null userEmail from user";
 			List<String> mailList = template.queryForList(sql.toString(), String.class);
-			//System.out.println(mailList);
+			System.out.println(mailList);
 			return mailList;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -44,9 +49,11 @@ public class UserDAO {
 	}
 	//아이디 중복검사
 	public int joinCheckID(String userID) {
+		String sql = "select userID from user where userID = ? and userAvailable = 1";
 		try {
-			String sql = "select userID from user where userID = ?";
-			String exist = (String)template.queryForObject(sql, new BeanPropertyRowMapper<String>(String.class), userID);
+			String exist = (String)template.queryForObject(sql, stringMapper, userID);
+			System.out.println("입력 받은 아이디: "+userID);
+			System.out.println("아이디 중복 결과: "+exist);
 			if(exist != null) {
 				return 1;
 			}
@@ -59,7 +66,7 @@ public class UserDAO {
 	public int loginAction(String userID, String userPassword) {
 		try {
 			String sql = "select * from user where userID = ? and userPassword = ?";
-			String exist = (String)template.queryForObject(sql, new BeanPropertyRowMapper<String>(String.class), userID, userPassword);
+			String exist = (String)template.queryForObject(sql, stringMapper, userID, userPassword);
 			if(exist != null) {
 				return 1; //회원 정보가 존재하면 return 1;
 			}
@@ -72,7 +79,7 @@ public class UserDAO {
 	public UserVO getUserVO(String userID) {
 		try {
 			String sql = "select * from user where userID = ? and userAvailable = 1";
-			UserVO vo = template.queryForObject(sql, new BeanPropertyRowMapper<UserVO>(UserVO.class), userID);
+			UserVO vo = template.queryForObject(sql, userMapper, userID);
 			System.out.println("userDAO 회원 정보: " +vo);
 			return vo;
 		}catch(Exception e) {

@@ -18,15 +18,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 
 import com.project.together.Constant;
 import com.project.vo.BoardVO;
 
+@Repository
 public class BoardDAO{
 	private JdbcTemplate template;
-//	private RowMapper<BoardVO> boardMapper = BeanPropertyRowMapper.newInstance(BoardVO.class);
+	private RowMapper<BoardVO> boardMapper = BeanPropertyRowMapper.newInstance(BoardVO.class);
 	private static final Logger logger = LoggerFactory.getLogger(BoardDAO.class);
+	
 	public BoardDAO() {
 		this.template = Constant.template;
 	}
@@ -39,7 +42,7 @@ public class BoardDAO{
 //		String category = request.getParameter("category");
 		String sql = "select * from board where boardCategory = ? and boardAvailable = 1 order by boardID desc";
 		//sql.append("select * from board where boardCategory like '%" +boardCategory+"%' order by boardID desc"); 
-		List<BoardVO> list = template.query(sql.toString() ,new BeanPropertyRowMapper(BoardVO.class), category);
+		List<BoardVO> list = template.query(sql.toString() , boardMapper, category.toUpperCase());
 		System.out.println(sql);
 		System.out.println(list);
 		return list;
@@ -52,7 +55,7 @@ public class BoardDAO{
 	}
 	public BoardVO getBoardVO(int boardID, Model model) {
 		String sql = "select * from board where boardID = ?";
-		BoardVO vo = template.queryForObject(sql, new BeanPropertyRowMapper<BoardVO>(BoardVO.class), boardID);
+		BoardVO vo = template.queryForObject(sql, boardMapper , boardID);
 		System.out.println("게시글 수정" + vo);
 		return vo;
 	}
@@ -125,7 +128,7 @@ public class BoardDAO{
 	
 	public String getFilename(int boardID) {
 		String sql = "select filename from board where boardID = ?";
-		BoardVO result = template.queryForObject(sql, new BeanPropertyRowMapper<BoardVO>(BoardVO.class), boardID);
+		BoardVO result = template.queryForObject(sql, boardMapper , boardID);
 		System.out.println("다운로드파일: "+result.getFilename());
 		return result.getFilename();
 	}

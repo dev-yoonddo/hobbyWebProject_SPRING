@@ -205,7 +205,7 @@ function checkID(id){
             	console.log(response);
             	if (response === 'fail') {
 	                //console.log('Spot registration successful:', response);
-	                //alert('이미 사용중인 아이디입니다.');
+	                alert('이미 사용중인 아이디입니다.');
 	               	id.value='이미 사용중인 아이디입니다.';
             	}else if(response === 'success'){
             		//중복되는 아이디가 없으면 disabled 처리하고 중복체크 버튼을 숨긴다.

@@ -8,15 +8,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 
 import com.project.together.Constant;
 import com.project.vo.BoardVO;
 import com.project.vo.CommentVO;
 
+@Repository
 public class CommentDAO {
 	private JdbcTemplate template;
-//	private RowMapper<BoardVO> boardMapper = BeanPropertyRowMapper.newInstance(BoardVO.class);
+	private RowMapper<CommentVO> cmtMapper = BeanPropertyRowMapper.newInstance(CommentVO.class);
 	private static final Logger logger = LoggerFactory.getLogger(BoardDAO.class);
 	public CommentDAO() {
 		this.template = Constant.template;
@@ -29,7 +32,7 @@ public class CommentDAO {
 	//		String category = request.getParameter("category");
 			String sql = "select * from comment where boardID = ? and cmtAvailable = 1 order by cmtID desc";
 			//sql.append("select * from board where boardCategory like '%" +boardCategory+"%' order by boardID desc"); 
-			List<CommentVO> cmtlist = template.query(sql.toString() ,new BeanPropertyRowMapper(CommentVO.class), boardID);
+			List<CommentVO> cmtlist = template.query(sql.toString() ,cmtMapper, boardID);
 			System.out.println(cmtlist);
 			return cmtlist;
 	//		model.addAttribute("bdlist",list);

@@ -41,4 +41,32 @@
 		<beans:property name="dataSource" ref="dataSource"/>
 	</beans:bean>
 	 -->
+	 
+	<!-- 각 VO 클래스의 bean을 만든다. -->
+	<beans:bean id="userVO" class="com.project.vo.UserVO"></beans:bean>
+	<beans:bean id="boardVO" class="com.project.vo.BoardVO"></beans:bean>
+	<beans:bean id="cmtVO" class="com.project.vo.CommentVO"></beans:bean>
+	<beans:bean id="heartVO" class="com.project.vo.HeartVO"></beans:bean>
+	
+	<beans:bean id="service" class="com.project.service.Service"></beans:bean>
+<!-- Service 클래스의 bean을 만든다. 
+	<beans:bean id="urservice" class="com.project.service.Impl.UserServiceImpl"></beans:bean>
+	<beans:bean id="bdservice" class="com.project.service.Impl.BoardServiceImpl"></beans:bean>
+	<beans:bean id="cmtservice" class="com.project.service.Impl.CmtServiceImpl"></beans:bean>
+	<beans:bean id="htservice" class="com.project.service.Impl.HeartServiceImpl"></beans:bean>
+	<beans:bean id="fileservice" class="com.project.service.Impl.FileServiceImpl"></beans:bean>
+	-->
+	
+	<!-- Service 클래스의 bean을 만든다. 
+	<beans:bean id="urservice" class="com.project.service.UserService"></beans:bean>
+	<beans:bean id="cmtservice" class="com.project.service.CmtService"></beans:bean>
+	<beans:bean id="bdservice" class="com.project.service.BoardService"></beans:bean>
+	<beans:bean id="htservice" class="com.project.service.HeartService"></beans:bean>
+	<beans:bean id="fileservice" class="com.project.service.FileService"></beans:bean>
+	-->
+	<!-- boardDAO 클래스의 bean을 만든다. -->
+	<beans:bean id="userDAO" class="com.project.dao.UserDAO"></beans:bean>
+	<beans:bean id="boardDAO" class="com.project.dao.BoardDAO"></beans:bean>
+	<beans:bean id="commentDAO" class="com.project.dao.CommentDAO"></beans:bean>
+	<beans:bean id="heartDAO" class="com.project.dao.HeartDAO"></beans:bean>
 </beans:beans>

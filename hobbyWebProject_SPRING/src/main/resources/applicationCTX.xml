@@ -10,12 +10,20 @@
 	<bean id="heartVO" class="com.project.vo.HeartVO"></bean>
 	
 
-	<bean id="user" class="com.project.service.UserService"></bean>
-	<bean id="board" class="com.project.service.BoardService"></bean>
-	<bean id="cmt" class="com.project.service.CmtService"></bean>
-	<bean id="file" class="com.project.service.FileDownService"></bean>
-	<bean id="heart" class="com.project.service.HeartService"></bean>
-	<!-- Service 클래스의 bean을 만든다. 
+	<bean id="urservice" class="com.project.service.Impl.UserServiceImpl"></bean>
+	<bean id="service" class="com.project.service.Impl.BoardServiceImpl"></bean>
+	<bean id="cmtservice" class="com.project.service.Impl.CmtServiceImpl"></bean>
+	<bean id="htservice" class="com.project.service.Impl.HeartServiceImpl"></bean>
+	<bean id="fileservice" class="com.project.service.Impl.FileServiceImpl"></bean>
+	
+	
+		<!-- Service 클래스의 bean을 만든다. 
+	<bean id="urservice" class="com.project.service.UserService"></bean>
+	<bean id="service" class="com.project.service.BoardService"></bean>
+	<bean id="cmtservice" class="com.project.service.CmtService"></bean>
+	<bean id="fileservice" class="com.project.service.FileDownService"></bean>
+	<bean id="htservice" class="com.project.service.HeartService"></bean>
+
 	<bean id="user" class="com.project.service.UserService"></bean>
 	<bean id="comment" class="com.project.service.CmtService"></bean>
 	<bean id="group" class="com.project.service.GrService"></bean>

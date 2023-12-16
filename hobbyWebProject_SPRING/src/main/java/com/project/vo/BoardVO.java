@@ -1,5 +1,9 @@
 package com.project.vo;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
 public class BoardVO {
 	private int boardID;
 	private String boardTitle;

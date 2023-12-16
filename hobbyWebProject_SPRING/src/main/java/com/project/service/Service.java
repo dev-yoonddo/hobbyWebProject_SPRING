@@ -1,28 +1,42 @@
 package com.project.service;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.project.service.Impl.BoardServiceImpl;
+import com.project.service.Impl.CmtServiceImpl;
+import com.project.service.Impl.FileServiceImpl;
+import com.project.service.Impl.HeartServiceImpl;
+import com.project.service.Impl.UserServiceImpl;
 
-import org.springframework.ui.Model;
-
-import com.project.vo.BoardVO;
-
-public interface Service {
-	//void execute(BoardVO boardVO);
-	//void execute(Model model);
-	List<BoardVO> getBoardList(String category, Model model);
-	BoardVO getBoardVO(int boardID, Model model);
-	int writeAction(BoardVO vo) throws Exception;
-	int updateAction(BoardVO vo);
-//	int fileDownload(HttpServletRequest request, HttpServletResponse response);
-	String getFilename(int boardID);
-	int viewCount(int boardID);
-	int downCount(int boardID);
-	int deleteAction(int boardID);
-	int heartCount(HttpServletRequest request, HttpServletResponse response);
-	int heartMinus(HttpServletRequest request, HttpServletResponse response);
+@Component
+public class Service{
+	public static Service service;
+	public static UserService urservice;
+	public static BoardService bdservice;
+	public static CmtService cmtservice;
+	public static HeartService htservice;
+	public static FileService fileservice;
+	
+	public static void setService(Service service) {
+		Service.service = service;
+	}
+	public void setUrservice(UserService urservice) {
+		Service.urservice = urservice;
+	}
+	public void setBdservice(BoardService bdservice) {
+		Service.bdservice = bdservice;
+	}
+	public void setCmtservice(CmtService cmtservice) {
+		Service.cmtservice = cmtservice;
+	}
+	public void setHtservice(HeartService htservice) {
+		Service.htservice = htservice;
+	}
+	public void setFileservice(FileService fileservice) {
+		Service.fileservice = fileservice;
+	}
+	
+	
+	
 }
