@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,11 +30,14 @@ public class BoardDAO{
 	private JdbcTemplate template;
 	private RowMapper<BoardVO> boardMapper = BeanPropertyRowMapper.newInstance(BoardVO.class);
 	private static final Logger logger = LoggerFactory.getLogger(BoardDAO.class);
+	StringBuilder sql = new StringBuilder();
+
+	public BoardDAO() {	}
 	
-	public BoardDAO() {
+	@Autowired
+	public void setTemplate() {
 		this.template = Constant.template;
 	}
-	StringBuilder sql = new StringBuilder();
 
 	public List<BoardVO> getBoardList(String category, Model model){
 		try {

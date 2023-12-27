@@ -6,11 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import com.project.vo.UserVO;
 
-public interface UserService {
-
+@Component
+public interface UserService extends BoardService{
+		
 	//UserService
 	List<String> getEmailList();
 	int joinAction(HttpServletRequest request, HttpServletResponse response);

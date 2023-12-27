@@ -2,6 +2,7 @@ package com.project.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,13 +11,18 @@ import com.project.together.Constant;
 import com.project.vo.HeartVO;
 
 @Repository
-public class HeartDAO {
+public class HeartDAO extends BoardDAO{
 	private JdbcTemplate template;
 //	private RowMapper<BoardVO> boardMapper = BeanPropertyRowMapper.newInstance(BoardVO.class);
 	private static final Logger logger = LoggerFactory.getLogger(BoardDAO.class);
-	public HeartDAO() {
+	
+	public HeartDAO() {}
+	
+	@Autowired
+	public void setTemplate() {
 		this.template = Constant.template;
 	}
+	
 	public int checkHeart(HeartVO vo) {
 		try {
 			String sql = "select * from heart where boardID = ? and userID = ?";

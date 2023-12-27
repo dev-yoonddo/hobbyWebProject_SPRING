@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,11 +18,16 @@ import com.project.vo.BoardVO;
 import com.project.vo.CommentVO;
 
 @Repository
-public class CommentDAO {
+public class CommentDAO{
+	
 	private JdbcTemplate template;
 	private RowMapper<CommentVO> cmtMapper = BeanPropertyRowMapper.newInstance(CommentVO.class);
 	private static final Logger logger = LoggerFactory.getLogger(BoardDAO.class);
-	public CommentDAO() {
+	
+	public CommentDAO() {}
+	
+	@Autowired
+	public void setTemplate() {
 		this.template = Constant.template;
 	}
 	

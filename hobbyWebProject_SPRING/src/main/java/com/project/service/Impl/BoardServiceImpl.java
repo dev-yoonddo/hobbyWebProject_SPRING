@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -22,9 +23,12 @@ import com.project.service.BoardService;
 import com.project.vo.*;
 
 @Service
-public class BoardServiceImpl implements BoardService{
-	private final BoardDAO boardDAO;
-	public BoardServiceImpl(final BoardDAO boardDAO) {
+public abstract class BoardServiceImpl implements BoardService {
+	
+	private BoardDAO boardDAO;
+	
+	@Autowired
+	public BoardServiceImpl(BoardDAO boardDAO) {
 		this.boardDAO = boardDAO;
 	}
 //	@Override

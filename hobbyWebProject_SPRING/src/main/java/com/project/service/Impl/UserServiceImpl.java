@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,15 @@ import com.project.vo.BoardVO;
 import com.project.vo.UserVO;
 
 @Service
-public class UserServiceImpl implements UserService{
-	private final UserDAO userDAO;
-	public UserServiceImpl(final UserDAO userDAO) {
+public abstract class UserServiceImpl implements UserService{
+	
+	private UserDAO userDAO;
+	
+	@Autowired
+	public UserServiceImpl(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
+	
 	@Override
 	public List<String> getEmailList(){
 		return userDAO.getEmailList();

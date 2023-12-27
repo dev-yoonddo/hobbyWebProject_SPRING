@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
 import com.project.dao.BoardDAO;
@@ -14,7 +15,8 @@ import com.project.service.Impl.BoardServiceImpl;
 import com.project.vo.BoardVO;
 import com.project.vo.UserVO;
 
-public interface BoardService {
+@Component
+public interface BoardService extends CmtService,HeartService,FileService{
 	//void execute(BoardVO boardVO);
 	//void execute(Model model);
 	List<BoardVO> getBoardList(String category, Model model);

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,17 +18,19 @@ import com.project.vo.HeartVO;
 import com.project.vo.UserVO;
 
 @Repository
-public class UserDAO {
+public class UserDAO{
+	
 	private JdbcTemplate template;
 	private RowMapper<UserVO> userMapper = BeanPropertyRowMapper.newInstance(UserVO.class);
 	private RowMapper<String> stringMapper = BeanPropertyRowMapper.newInstance(String.class);
 	
+	public UserDAO() {}
 	//다른 클래스에서 UserDAO클래스의 메서드를 사용하려고 할 때 private으로 선언한 JdbcTemplate에 접근할 수 없기 때문에
 	//생성자를 작성해준다.
-	public UserDAO() {
+	@Autowired
+	public void setTemplate() {
 		this.template = Constant.template;
 	}
-	
 	//이메일 리스트를 넘겨 사용자가 입력한 이메일이 이미 존재하는지 확인
 	public List<String> getEmailList(){
 		String sql = "select userEmail from user where userEmail is not null";
